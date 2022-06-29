@@ -13,3 +13,8 @@ git clone https://github.com/andersonbraz/hands-on-redis.git
 ```shell
 cd hands-on-redis && chmod +x install_redis.sh && ./install_redis.sh
 ```
+
+
+## Referência
+
+[Redis e Python](https://www.youtube.com/watch?v=vc_z2EHwdOE)
