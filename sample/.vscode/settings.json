@@ -1,0 +1,22 @@
+{
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "python.sortImports": true
+        },
+        "editor.formatOnSave": true
+    },
+    "code-runner.executorMap": {
+        "python": ".venv/bin/python"
+    },
+    "code-runner.ignoreSelection": true,
+    "code-runner.runInTerminal": true,
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": false,
+    "python.terminal.activateEnvironment": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": ".venv/bin/pytest",
+    "python.testing.unittestEnabled": false
+}

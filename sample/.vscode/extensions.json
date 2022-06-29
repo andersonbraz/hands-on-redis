@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "formulahendry.code-runner",
+        "dracula-theme.theme-dracula",
+        "eamodio.gitlens",
+        "vscode-icons-team.vscode-icons",
+        "ms-python.python",
+        "ms-vscode.notepadplusplus-keybindings"
+    ]
+}
