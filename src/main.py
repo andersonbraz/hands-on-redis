@@ -1,32 +1,35 @@
 import datetime
+import redis
 import uuid
-from redis_om import HashModel, Migrator, Field
-from redis import Redis
+import json
+import time
 
-
-class Tracking(HashModel):
-    date: datetime.date
-    file: str = Field(index=True)
-    seq: int = Field(index=True)
-    num_files: int
-
-    class Meta:
-        database = Redis(host="localhost", port=6379, password="")
-
+# r = redis.StrictRedis(host="xxxxxx.cache.amazonaws.com", port=6379, db=0, password="your-key-oauth", ssl=True, ssl_cert_reqs=None)
+r = redis.StrictRedis(host="localhost", port=6379, db=0, password="your-key-oauth")
 
 def producer():
-    track = Tracking(
-        date=datetime.date.today(), file=str(uuid.uuid1()), seq=1, num_files=3
-    )
-    print("#### PRODUCER RECORD: " + str(track))
-    track.save()
-    consumer(track.pk)
+    for x in range(9999):
+        data = {
+            "file": str(uuid.uuid4()),
+            "date": str(datetime.date.today()),
+            "seq": int(x),
+        }
+        print(json.dumps(data))
+        ikey = "key_" + str(x)
+        r.hmset(ikey, data)
 
 
-def consumer(pk):
-    Migrator().run()
-    result = Tracking.find(Tracking.pk == pk).all()
-    print("#### CONSUMER QUERY: " + str(result))
+def consumer():
+    result = r.hgetall("key_9985")
+    print(result)
 
+
+def clear_cache():
+    r.flushall()
 
 producer()
+time.sleep(15)
+consumer()
+
+# Delete All Keys
+# r.flushall()
