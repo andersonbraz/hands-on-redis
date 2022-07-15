@@ -1,14 +1,25 @@
 import datetime
+import telnetlib
 import redis
 import uuid
 import json
-import time
+from telnetlib import Telnet
 
-# r = redis.StrictRedis(host="xxxxxx.cache.amazonaws.com", port=6379, db=0, password="your-key-oauth", ssl=True, ssl_cert_reqs=None)
-r = redis.StrictRedis(host="localhost", port=6379, db=0, password="your-key-oauth")
+host_redis = "localhost"
+ip_redis = "127.0.0.1"
+token = ""
+
+r = redis.Redis(
+        host=host_redis, 
+        port=6379, 
+        db=0, 
+        password=token, 
+        ssl=True, 
+        ssl_cert_reqs=None
+    )
 
 def producer():
-    for x in range(9999):
+    for x in range(10):
         data = {
             "file": str(uuid.uuid4()),
             "date": str(datetime.date.today()),
@@ -20,16 +31,42 @@ def producer():
 
 
 def consumer():
-    result = r.hgetall("key_9985")
+    result = r.hgetall("key_5")
     print(result)
 
 
 def clear_cache():
+    print("Flush Data on Redis!")
     r.flushall()
 
-producer()
-time.sleep(15)
-consumer()
+def check_connection():
+    try:
+        r.ping()
+        print("Successfully connected to redis")
+    except (telnetlib):
+        print("Redis connection error!")
+        return False
+    return True
 
+def check_telnet():
+    tn = telnetlib.Telnet()
+    try:
+        tn.open(ip_redis, 6379, 30)
+        tn.write(b"Hello!")
+        response = 'Success Telnet!'
+    except Exception:
+        response = 'Failed Telnet!'
+    finally:
+        tn.close()
+        print(response)
+        
+# Check Telnet
+check_telnet()
+# Check Connection Redis
+check_connection()
+# Call Producer
+producer()
+# Call Consumer
+consumer()
 # Delete All Keys
-# r.flushall()
+clear_cache()
