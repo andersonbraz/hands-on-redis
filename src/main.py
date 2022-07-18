@@ -60,13 +60,38 @@ def check_telnet():
         tn.close()
         print(response)
         
+def show_keys():
+    print(r.keys())
+
+
+def filter_keys(param):
+    print(r.keys(param))
+
+
+def inter_keys(param):
+    for key in r.scan_iter(param):
+        print(r.hgetall(key))
+
+
+def sample_del(key):
+    r.delete(key)
+
+
 # Check Telnet
 check_telnet()
 # Check Connection Redis
 check_connection()
 # Call Producer
-producer()
+# producer()
 # Call Consumer
 consumer()
 # Delete All Keys
-clear_cache()
+# clear_cache()
+
+print(" BEGIN: ---------------------------------------------------- ")
+show_keys()
+print(" ---------------------------------------------------- ")
+filter_keys("pin_*")
+print(" ---------------------------------------------------- ")
+inter_keys("pin_*")
+print(" END. ---------------------------------------------------- ")
